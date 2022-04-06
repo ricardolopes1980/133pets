@@ -113,15 +113,15 @@ def testar_deletar_pet():
     assert corpo_da_resposta['type'] == type_esperado
     assert corpo_da_resposta['message'] == message_esperada
 
-@pytest.mark.parametrize('pet_id,categoria_id,category_name,name,tags_id,tags_name,status', ler_dados_csv())
-def testar_incluir_pet_json_dinamico(pet_id,categoria_id,category_name,name,tags_id,tags_name,status):
+@pytest.mark.parametrize('pet_id,categoria_id,category_name,name,tags_id,tags_name,status,status_code', ler_dados_csv())
+def testar_incluir_pet_json_dinamico(pet_id,categoria_id,category_name,name,tags_id,tags_name,status,status_code):
     # 1 - Configura
     # 1.1 - Dados de Entrada
     # Utilizará o arquivo pets_positivo.csv
 
 
     # 1.2 - Resultados Esperados
-    status_co
+    # Utilizará o arquivo pets_positivo.csv
 
     # 2 - Executa
 
