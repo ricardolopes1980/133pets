@@ -1,8 +1,27 @@
+import csv
+
 import pytest       # motor / engine
 import requests     # biblioteca para comunicar com APIs
 
 base_url = 'https://petstore.swagger.io/v2' # endereço da API
 headers = {'Content-Type': 'application/json'}
+
+
+def ler_dados_csv():
+    dados_csv = []  # criamos uma lista vazia
+    nome_arquivo = 'C:\\Users\\ricar\\PycharmProjects\\133pets\\vendors\\csv\\pets_positivo.csv'
+    try:
+        with open(nome_arquivo, newline='') as arquivo_csv:
+            campos = csv.reader(arquivo_csv, delimiter=',')
+            next(campos)
+            for linha in campos:
+                dados_csv.append(linha)
+        return dados_csv
+    except FileNotFoundError:
+        print(f'Arquivo não encontrado: {nome_arquivo}')
+    except Exception as fail:
+        print(f'Falha não prevista: {fail}')
+
 
 def testar_incluir_pet():
 # Configura
@@ -93,3 +112,23 @@ def testar_deletar_pet():
     assert corpo_da_resposta['code'] == code_esperado
     assert corpo_da_resposta['type'] == type_esperado
     assert corpo_da_resposta['message'] == message_esperada
+
+@pytest.mark.parametrize('pet_id,categoria_id,category_name,name,tags_id,tags_name,status', ler_dados_csv())
+def testar_incluir_pet_json_dinamico(pet_id,categoria_id,category_name,name,tags_id,tags_name,status):
+    # 1 - Configura
+    # 1.1 - Dados de Entrada
+    # Utilizará o arquivo pets_positivo.csv
+
+
+    # 1.2 - Resultados Esperados
+    status_co
+
+    # 2 - Executa
+
+
+    # 3 - Valida
+
+
+
+
+

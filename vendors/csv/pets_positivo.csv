@@ -1,0 +1,6 @@
+pet_id,categoria_id,category_name,name,tags_id,tags_name,status
+964101,1,dog,Kate,1,vacinado,disponivel
+964102,2,cat,Tom,2,castrado,vendido
+964103,3,fish,Nemo,0,,disponivel
+964104,2,cat,Mingau,1,vacinado,disponivel
+964105,1,dog,Scooby,1,vacinado,vendido
