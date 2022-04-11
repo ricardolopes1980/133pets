@@ -1,4 +1,4 @@
-pet_id,categoria_id,category_name,name,tags_id,tags_name,status,status_code
+pet_id,category_id,category_name,name,tags_id,tags_name,status,status_code
 964101,1,dog,Kate,1,vacinado,disponivel,200
 964102,2,cat,Tom,2,castrado,vendido,200
 964103,3,fish,Nemo,0,,disponivel,200

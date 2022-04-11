@@ -1,9 +1,9 @@
 import csv
+import json
+import pytest  # motor / engine
+import requests  # biblioteca para comunicar com APIs
 
-import pytest       # motor / engine
-import requests     # biblioteca para comunicar com APIs
-
-base_url = 'https://petstore.swagger.io/v2' # endereço da API
+base_url = 'https://petstore.swagger.io/v2'  # endereço da API
 headers = {'Content-Type': 'application/json'}
 
 
@@ -12,7 +12,7 @@ def ler_dados_csv():
     nome_arquivo = 'C:\\Users\\ricar\\PycharmProjects\\133pets\\vendors\\csv\\pets_positivo.csv'
     try:
         with open(nome_arquivo, newline='') as arquivo_csv:
-            campos = csv.reader(arquivo_csv, delimiter=',')
+            campos = csv.reader(arquivo_csv, delimiter=',')  # caracter delimitador
             next(campos)
             for linha in campos:
                 dados_csv.append(linha)
@@ -24,28 +24,28 @@ def ler_dados_csv():
 
 
 def testar_incluir_pet():
-# Configura
+    # Configura
     # Dados de entrada: virão do pet1.json
     # Resultado esperado
     status_code_esperado = 200
     nome_pet_esperado = 'Kate'
     tag_esperada = 'Vacinada'
 
-
-# Executa
+    # Executa
     resultado_obtido = requests.post(url=base_url + '/pet',
-                  data=open('C:\\Users\\ricar\\PycharmProjects\\133pets\\vendors\\json\\pet1.json', 'rb'),
-                  headers=headers
-                  )
+                                     data=open('C:\\Users\\ricar\\PycharmProjects\\133pets\\vendors\\json\\pet1.json',
+                                               'rb'),
+                                     headers=headers
+                                     )
 
-
-# Valida
+    # Valida
     print(resultado_obtido)
     corpo_da_resposta = resultado_obtido.json()
     print(f'{corpo_da_resposta}')
     assert resultado_obtido.status_code == status_code_esperado
     assert corpo_da_resposta['name'] == nome_pet_esperado
     assert corpo_da_resposta['tags'][0]['name'] == tag_esperada
+
 
 def testar_consultar_pet():
     # Configura
@@ -61,15 +61,16 @@ def testar_consultar_pet():
     resultado_obtido = requests.get(
         url=base_url + '/pet/' + pet_id,
         headers=headers
-        )
+    )
 
-    #Valida
+    # Valida
     print(resultado_obtido)
     corpo_da_resposta = resultado_obtido.json()
     print(corpo_da_resposta)
     assert resultado_obtido.status_code == status_code_esperado
     assert corpo_da_resposta['name'] == nome_pet_esperado
     assert corpo_da_resposta['tags'][0]['name'] == tag_esperada
+
 
 def testar_alterar_pet():
     status_code_esperado = 200
@@ -90,6 +91,7 @@ def testar_alterar_pet():
     assert resultado_obtido.status_code == status_code_esperado
     assert corpo_da_resposta['name'] == nome_pet_esperado
     assert corpo_da_resposta['status'] == status_esperado
+
 
 def testar_deletar_pet():
     pet_id = '219641'
@@ -113,34 +115,34 @@ def testar_deletar_pet():
     assert corpo_da_resposta['type'] == type_esperado
     assert corpo_da_resposta['message'] == message_esperada
 
-@pytest.mark.parametrize('pet_id,categoria_id,category_name,name,tags_id,tags_name,status,status_code', ler_dados_csv())
-def testar_incluir_pet_json_dinamico(pet_id,categoria_id,category_name,name,tags_id,tags_name,status,status_code):
+
+@pytest.mark.parametrize('pet_id,category_id,category_name,name,tags_id,tags_name,status,status_code', ler_dados_csv())
+def testar_incluir_pet_json_dinamico(pet_id,category_id,category_name,name,tags_id,tags_name,status,status_code):
     # 1 - Configura
     # 1.1 - Dados de Entrada
     # Utilizará o arquivo pets_positivo.csv
 
-
     # 1.2 - Resultados Esperados
     # Utilizará o arquivo pets_positivo.csv
 
-    # 1.3 - Extra - Montar o json dinamicamente a partir do dsv
+    # 1.3 - Extra - Montar o json dinamicamicamente a partir do csv
     corpo_json = '{'
     corpo_json += f'  "id": {pet_id},'
     corpo_json += '  "category": {'
-    corpo_json += f'    "id": {categoria_id},'
-    corpo_json += f'    "name": {category_name}'
+    corpo_json += f'    "id": {category_id},'
+    corpo_json += f'    "name": "{category_name}"'
     corpo_json += '},'
-    corpo_json += f'"name": {name},'
+    corpo_json += f'"name": "{name}",'
     corpo_json += '"photoUrls": ['
     corpo_json += '"string"'
     corpo_json += '],'
     corpo_json += '"tags": ['
     corpo_json += '{'
     corpo_json += f'    "id": {tags_id},'
-    corpo_json += f'    "name": {tags_name}'
-    corpo_json += '},'
+    corpo_json += f'    "name": "{tags_name}"'
+    corpo_json += '}'
     corpo_json += '],'
-    corpo_json += f'  "status": {status},'
+    corpo_json += f'"status": "{status}"'
     corpo_json += '}'
 
     print(corpo_json)
@@ -153,17 +155,13 @@ def testar_incluir_pet_json_dinamico(pet_id,categoria_id,category_name,name,tags
     )
 
     # 3 - Valida
-    assert resultado_obtido.status_code == status_code
+    assert resultado_obtido.status_code == int(status_code)
     corpo_da_resposta = resultado_obtido.json()
     print(corpo_da_resposta)
-    assert corpo_da_resposta['id'] == pet_id
-    assert corpo_da_resposta['category'][0]['id'] == categoria_id
-    assert corpo_da_resposta['category'][0]['name'] == category_name
+    assert corpo_da_resposta['id'] == int(pet_id)
+    assert corpo_da_resposta['category']['id'] == int(category_id)
+    assert corpo_da_resposta['category']['name'] == category_name
     assert corpo_da_resposta['name'] == name
-    assert corpo_da_resposta['tags'][0]['id'] == tags_id
+    assert corpo_da_resposta['tags'][0]['id'] == int(tags_id)
     assert corpo_da_resposta['tags'][0]['name'] == tags_name
     assert corpo_da_resposta['status'] == status
-
-
-
-
