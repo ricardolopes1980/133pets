@@ -19,7 +19,7 @@ class TestIncluirUsuario():
 
     # 3.1.1 - Método de inicialização / para ligar o Selenium WebDriver
     def setup_method(self, method):
-        self.driver = webdriver.Chrome()  # instanciando o Selenium / carregando na memória
+        self.driver = webdriver.Chrome('C:\\Users\\ricar\\PycharmProjects\\133pets\\vendors\\drivers\\chrome\\100\\chromedriver.exe')  # instanciando o Selenium / carregando na memória
         self.vars = {}  # criando uma lista vazia
 
     # 3.1.2 - Método de encerramento / para desligar o Selenium WebDriver
